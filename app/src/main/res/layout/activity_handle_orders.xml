@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
     android:background="@drawable/my_bg"
-    tools:context=".OrderStatus">
+    tools:context=".HandleOrders">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -37,15 +38,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/order_status"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="center_vertical|start"
-                    android:textAllCaps="true"
-                    android:textStyle="italic"
-                    android:text="Status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/order_phone"
@@ -68,6 +60,14 @@
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
+
+            <ImageView
+                android:layout_gravity="center_vertical|end"
+                android:src="@drawable/ic_cancel_black_24dp"
+                android:layout_marginRight="8dp"
+                android:id="@+id/cart_item_count"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
 
         </LinearLayout>
 

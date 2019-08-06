@@ -16,4 +16,5 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="title_activity_home_category">HomeCategory</string>
+    <string name="title_activity_admin_home">AdminHome</string>
 </resources>

@@ -39,7 +39,6 @@
             <Button
                 android:layout_width="400dp"
                 android:layout_height="200dp"
-                android:onClick="goList"
                 android:background="@drawable/pizza" />
 
             <TextView
@@ -91,7 +90,7 @@
     </ScrollView>
 
     <include
-        layout="@layout/app_bar_home"
+        layout="@layout/app_bar_admin_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -101,12 +100,11 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_home"
 
         android:background="@color/overlayBackground"
         app:itemTextColor="@android:color/white"
         app:itemIconTint="@android:color/white"
-
-        app:menu="@menu/activity_home_drawer" />
+        app:headerLayout="@layout/nav_header_admin_home"
+        app:menu="@menu/activity_admin_home_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

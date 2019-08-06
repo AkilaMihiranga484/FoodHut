@@ -9,7 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".OrderStatus"></activity>
+        <activity android:name=".Customers"></activity>
+        <activity android:name=".ManageFoodList" />
+        <activity android:name=".ManageCategory" />
+        <activity android:name=".HandleOrders" />
+        <activity
+            android:name=".AdminHome"
+            android:label="@string/title_activity_admin_home"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".OrderStatus" />
         <activity android:name=".Cart" />
         <activity android:name=".FoodDetails" />
         <activity

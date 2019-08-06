@@ -22,13 +22,13 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 
-public class Home extends AppCompatActivity
+public class AdminHome extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_admin_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -61,7 +61,7 @@ public class Home extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
+        getMenuInflater().inflate(R.menu.admin_home, menu);
         return true;
     }
 
@@ -88,14 +88,19 @@ public class Home extends AppCompatActivity
 
         if (id == R.id.home) {
             // Handle the camera action
-        } else if (id == R.id.nav_menu) {
-
-        } else if (id == R.id.nav_cart) {
-            Intent cartIntent = new Intent(this,Cart.class);
+        } else if (id == R.id.admin_menu) {
+            Intent cartIntent = new Intent(this,ManageCategory.class);
+            startActivity(cartIntent);
+        }else if (id == R.id.customers) {
+            Intent cartIntent = new Intent(this,Customers.class);
             startActivity(cartIntent);
 
-        } else if (id == R.id.nav_orders) {
-            Intent ordersIntent = new Intent(this,OrderStatus.class);
+        } else if (id == R.id.admin_foodList) {
+            Intent cartIntent = new Intent(this,ManageFoodList.class);
+            startActivity(cartIntent);
+
+        } else if (id == R.id.admin_orders) {
+            Intent ordersIntent = new Intent(this,HandleOrders.class);
             startActivity(ordersIntent);
 
         } else if (id == R.id.nav_log_out) {
@@ -114,5 +119,4 @@ public class Home extends AppCompatActivity
         Intent intent = new Intent(this, FoodList.class);
         startActivity(intent);
     }
-
 }
