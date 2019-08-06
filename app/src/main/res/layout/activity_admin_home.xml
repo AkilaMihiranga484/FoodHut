@@ -8,87 +8,6 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="60dp" />
-
-            <Button
-                android:layout_width="400dp"
-                android:layout_height="200dp"
-                android:onClick="goList"
-                android:background="@drawable/fried_rice_in_dinner_food_hd_photo" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="Rice"
-                android:textAlignment="center"
-                android:textSize="24sp"
-                android:textStyle="bold"/>
-
-            <Button
-                android:layout_width="400dp"
-                android:layout_height="200dp"
-                android:background="@drawable/pizza" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="Pizza"
-                android:textAlignment="center"
-                android:textSize="24sp"
-                android:textStyle="bold"/>
-            <Button
-                android:layout_width="400dp"
-                android:layout_height="200dp"
-                android:background="@drawable/hamburgers_uhd_4k_wallpaper" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="Burgers"
-                android:textAlignment="center"
-                android:textSize="24sp"
-                android:textStyle="bold"/>
-            <Button
-                android:layout_width="400dp"
-                android:layout_height="200dp"
-                android:background="@drawable/wp1929359" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="Short Eats"
-                android:textAlignment="center"
-                android:textSize="24sp"
-                android:textStyle="bold"/>
-            <Button
-                android:layout_width="400dp"
-                android:layout_height="200dp"
-                android:background="@drawable/ice_cream" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="Dessert"
-                android:textAlignment="center"
-                android:textSize="24sp"
-                android:textStyle="bold"/>
-
-        </LinearLayout>
-
-    </ScrollView>
-
     <include
         layout="@layout/app_bar_admin_home"
         android:layout_width="match_parent"
@@ -104,6 +23,7 @@
         android:background="@color/overlayBackground"
         app:itemTextColor="@android:color/white"
         app:itemIconTint="@android:color/white"
+        app:layout="@layout/content_admin_home"
         app:headerLayout="@layout/nav_header_admin_home"
         app:menu="@menu/activity_admin_home_drawer" />
 

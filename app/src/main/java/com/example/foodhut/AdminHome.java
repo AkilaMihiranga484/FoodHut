@@ -103,7 +103,7 @@ public class AdminHome extends AppCompatActivity
             Intent ordersIntent = new Intent(this,HandleOrders.class);
             startActivity(ordersIntent);
 
-        } else if (id == R.id.nav_log_out) {
+        } else if (id == R.id.admin_log_out) {
             Intent signIn = new Intent(this,Login.class);
             signIn.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(signIn);

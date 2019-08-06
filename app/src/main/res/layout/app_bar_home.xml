@@ -30,7 +30,6 @@
         android:layout_margin="@dimen/fab_margin"
         android:backgroundTint="@android:color/white"
         android:clickable="true"
-        android:onClick="goToCart"
         app:srcCompat="@drawable/ic_shopping_cart_black_24dp"
         tools:ignore="VectorDrawableCompat"
         />
