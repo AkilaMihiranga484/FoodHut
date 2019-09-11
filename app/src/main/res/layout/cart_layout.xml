@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    >
 
     <LinearLayout
         android:layout_marginTop="16dp"
@@ -32,7 +33,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/cart_item_price"
+                android:id="@+id/cart_item_Price"
                 android:layout_marginLeft="10dp"
                 android:gravity="center_vertical|start"
                 android:textAllCaps="true"
@@ -45,10 +46,11 @@
 
         <ImageView
             android:layout_gravity="center_vertical|end"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="16dp"
             android:id="@+id/cart_item_count"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
 
     </LinearLayout>
 

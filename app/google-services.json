@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "10691460286",
+    "firebase_url": "https://foodhut-80b68.firebaseio.com",
+    "project_id": "foodhut-80b68",
+    "storage_bucket": "foodhut-80b68.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10691460286:android:bf9c13adc02520d31532ef",
+        "android_client_info": {
+          "package_name": "com.example.foodhut"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "10691460286-qu0l84i7s83cmekn1dkdr3sbflldo61p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.foodhut",
+            "certificate_hash": "707cc8f704405c1d622540ac470d9dc4f1aaa53a"
+          }
+        },
+        {
+          "client_id": "10691460286-ltki0ojlirod2mc8msmsqn916v23082c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3pVh7R_YRoyy3s1L0I_yS7KsOL_7kJ68"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "10691460286-ltki0ojlirod2mc8msmsqn916v23082c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

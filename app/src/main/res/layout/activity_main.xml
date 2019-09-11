@@ -1,80 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/food4"
     tools:context=".MainActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteY="137dp">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="308dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="49dp"
-        android:layout_marginTop="116dp"
-        android:layout_marginEnd="54dp"
-        android:layout_marginBottom="515dp"
-        android:src="@drawable/food_hut"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:layout_width="323dp"
+            android:layout_height="159dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="44dp"
+            android:layout_marginBottom="105dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/food_hut"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_conversion_absoluteHeight="200dp"
+            tools:layout_conversion_absoluteWidth="200dp" />
 
-    <TextView
-        android:id="@+id/txtSlogan"
-        android:layout_width="309dp"
-        android:layout_height="63dp"
-        android:layout_marginStart="49dp"
-        android:layout_marginTop="216dp"
-        android:layout_marginEnd="53dp"
-        android:layout_marginBottom="452dp"
-        android:gravity="center"
-        android:text="@string/slogan"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/txtSlogan"
+            android:layout_width="236dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="87dp"
+            android:layout_marginTop="148dp"
+            android:layout_marginEnd="88dp"
+            android:layout_marginBottom="52dp"
+            android:gravity="center"
+            android:text="@string/slogan"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_conversion_absoluteHeight="86dp"
+            tools:layout_conversion_absoluteWidth="200dp" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/button1"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="134dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="62dp"
-        android:layout_marginTop="590dp"
-        android:layout_marginEnd="215dp"
-        android:layout_marginBottom="91dp"
-        android:onClick="signUpPage"
-        android:text="SignUp"
-        android:textColor="#F7F7F8"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:weightSum="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/button2"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="128dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="229dp"
-        android:layout_marginTop="590dp"
-        android:layout_marginEnd="54dp"
-        android:layout_marginBottom="90dp"
-        android:onClick="loginPage"
-        android:text="Login"
-        android:textColor="#F6F6F8"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <info.hoang8f.widget.FButton
+            android:id="@+id/btnSignUp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:text="@string/btnSignUp"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            app:buttonColor="@color/btnSignUp" />
 
+        <info.hoang8f.widget.FButton
+            android:id="@+id/btnSignIn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:text="@string/btnSignIn"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            app:buttonColor="@color/btnSignActive" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">FoodHut</string>
     <string name="slogan">No matter where you are:Whether you are at home, or in the office, or on the beach - We will find you and we will feed you.</string>
+    <string name="btnSignIn">SignIn</string>
+    <string name="btnSignUp" translatable="false">SignUp</string>
     <string name="title_activity_home">Home</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -15,6 +17,4 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
-    <string name="title_activity_home_category">HomeCategory</string>
-    <string name="title_activity_admin_home">AdminHome</string>
 </resources>
