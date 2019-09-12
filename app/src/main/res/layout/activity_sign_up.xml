@@ -16,7 +16,7 @@
         android:layout_height="wrap_content">
 
         <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/edtphone"
+            android:id="@+id/sEdtphone"
             android:hint="Phone Number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             />
 
         <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/edtName"
+            android:id="@+id/sEdtName"
             android:hint="Name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             />
 
         <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/edtPassword"
+            android:id="@+id/sEdtPassword"
             android:hint="Password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

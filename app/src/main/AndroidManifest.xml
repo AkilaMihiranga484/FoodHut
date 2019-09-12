@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".OrderStatus"></activity>
+        <activity android:name=".AdminHome"></activity>
+        <activity android:name=".OrderStatus" />
         <activity android:name=".Cart" />
         <activity android:name=".Cart$FoodDetail" />
         <activity android:name=".FoodList" />

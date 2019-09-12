@@ -43,31 +43,43 @@ public class SignIn extends AppCompatActivity {
             public void onClick(View view) {
 
                 final ProgressDialog mDialog = new ProgressDialog(SignIn.this);
-                mDialog.setMessage("Please waiting");
+                mDialog.setMessage("Please wait...");
                 mDialog.show();
 
                 table_user.addValueEventListener(new ValueEventListener() {
+
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        //Check if user not exist in database
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        //Check if user not exist in Database
                         if(dataSnapshot.child(edtPhone.getText().toString()).exists()) {
-                            //Get User Information
+                            //Get user information
                             mDialog.dismiss();
                             User user = dataSnapshot.child(edtPhone.getText().toString()).getValue(User.class);
-                            user.setPhone(edtPhone.getText().toString());//Set Phone
-                            if (user.getPassword().equals(edtPassword.getText().toString())) {
+                            user.setPhone(edtPhone.getText().toString());//set phone
+                            if (user.getPhone().equals("0778990419") && user.getName().equals("Admin")) {
+
+                                Toast.makeText(SignIn.this, "Sign in success!!!", Toast.LENGTH_SHORT).show();
+                                Intent homeIntent = new Intent(SignIn.this, AdminHome.class);
+                                Common.currentUser = user;
+                                startActivity(homeIntent);
+                                finish();
+                            }
+                            else if (user.getPassword().equals(edtPassword.getText().toString())) {
+
+                                Toast.makeText(SignIn.this, "Sign in success!!!", Toast.LENGTH_SHORT).show();
                                 Intent homeIntent = new Intent(SignIn.this, Home.class);
                                 Common.currentUser = user;
                                 startActivity(homeIntent);
                                 finish();
-                            } else {
-                                Toast.makeText(SignIn.this, "Sign in fail", Toast.LENGTH_SHORT).show();
                             }
-                        }
-                        else
-                        {
+                            else {
+
+                                Toast.makeText(SignIn.this, "Wrong password!!!", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
                             mDialog.dismiss();
-                            Toast.makeText(SignIn.this,"User not exist",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignIn.this, "User not exist!!!", Toast.LENGTH_SHORT).show();
                         }
                     }
 
