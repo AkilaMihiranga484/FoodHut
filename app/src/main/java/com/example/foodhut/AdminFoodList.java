@@ -1,34 +1,36 @@
 package com.example.foodhut;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.foodhut.Common.Common;
 import com.example.foodhut.Interface.ItemClickListener;
 import com.example.foodhut.Model.Category;
-import com.example.foodhut.ViewHolder.MenuViewHolder;
-import com.example.foodhut.ViewHolder.MenuViewHolderAdmin;
+import com.example.foodhut.Model.Food;
+import com.example.foodhut.ViewHolder.FoodViewHolder;
+import com.example.foodhut.ViewHolder.FoodViewHolderAdmin;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-
-import android.view.LayoutInflater;
-import android.view.View;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.view.GravityCompat;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-
-import android.view.MenuItem;
-
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -38,42 +40,32 @@ import com.google.firebase.storage.UploadTask;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
 
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.Menu;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.UUID;
 
 import info.hoang8f.widget.FButton;
 
-public class AdminHome extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class AdminFoodList extends AppCompatActivity {
+
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
+
+    RelativeLayout rootLayout;
 
     FirebaseDatabase database;
-    DatabaseReference category;
+    DatabaseReference foodList;
     FirebaseStorage storage;
     StorageReference storageReference;
 
-    TextView txtFullName;
+    FloatingActionButton fab;
 
-    RecyclerView recycler_menu;
-    RecyclerView.LayoutManager layoutManager;
+    String categoryId="";
 
-    FirebaseRecyclerAdapter<Category, MenuViewHolderAdmin> adapter;
+    FirebaseRecyclerAdapter<Food, FoodViewHolderAdmin> adapter;
 
-    MaterialEditText edtName;
-    FButton btnUpload,btnSelect;
+    MaterialEditText edtName,edtDescription,edtPrice,edtDiscount;
+    FButton btnSelect,btnUpload;
 
-    Category newCategory;
-
-    DrawerLayout drawer;
+    Food newFood;
 
     Uri savUri;
     private final int PICK_IMAGE_REQUEST = 71;
@@ -81,85 +73,53 @@ public class AdminHome extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_home);
+        setContentView(R.layout.activity_admin_food_list);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Menu Management");
-        setSupportActionBar(toolbar);
+        database = FirebaseDatabase.getInstance();
+        foodList = database.getReference("Food");
 
-        //Init firebase
-        database =FirebaseDatabase.getInstance();
-        category =database.getReference("Category");
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
+        //Firebase
+        recyclerView = findViewById(R.id.recycler_food);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
+        rootLayout = (RelativeLayout)findViewById(R.id.rootLayout);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog();
+                showAddFoodDialog();
             }
         });
-        drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
 
-        //set name for user
-        View headerView = navigationView.getHeaderView(0);
-        txtFullName = headerView.findViewById(R.id.txtFullName);
-        txtFullName.setText(Common.currentUser.getName());
-
-        //load menu
-        recycler_menu = findViewById(R.id.recycler_menu);
-        recycler_menu.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recycler_menu.setLayoutManager(layoutManager);
-
-        loadMenu();
+        //Get Intent Here
+        if(getIntent() != null) {
+            categoryId = getIntent().getStringExtra("CategoryId");
+        }
+        if(!categoryId.isEmpty() && categoryId != null)
+        {
+            loadListFood(categoryId);
+        }
     }
 
-
-
-    private void loadMenu() {
-        adapter = new FirebaseRecyclerAdapter<Category, MenuViewHolderAdmin>(Category.class, R.layout.add_menu_item, MenuViewHolderAdmin.class,category) {
-
-            @Override
-            protected void populateViewHolder(MenuViewHolderAdmin menuViewHolderAdmin, Category category, int i) {
-                menuViewHolderAdmin.txtMenuName.setText(category.getName());
-                Picasso.with(getBaseContext()).load(category.getImage())
-                        .into(menuViewHolderAdmin.imageView);
-
-
-                menuViewHolderAdmin.setItemClickListener(new ItemClickListener() {
-                    @Override
-                    public void onClick(View view, int position, boolean isLongClick) {
-                        //send category id and start new activity
-                        Intent foodList = new Intent(AdminHome.this,AdminFoodList.class);
-                        foodList.putExtra("CategoryId",adapter.getRef(position).getKey());
-                        startActivity(foodList);
-                    }
-                });
-            }
-        };
-        adapter.notifyDataSetChanged();//Refresh data if have data changed
-        recycler_menu.setAdapter(adapter);
-    }
-
-    private void showDialog() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(AdminHome.this);
-        alertDialog.setTitle("Add New Category");
+    private void showAddFoodDialog() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(AdminFoodList.this);
+        alertDialog.setTitle("Add New Food");
         alertDialog.setMessage("Please Fill Full Information");
 
         LayoutInflater inflater = this.getLayoutInflater();
-        View add_menu_layout = inflater.inflate(R.layout.add_new_menu_layout,null);
+        View add_menu_layout = inflater.inflate(R.layout.add_new_food_layout,null);
 
         edtName = add_menu_layout.findViewById(R.id.edtName);
+        edtDescription = add_menu_layout.findViewById(R.id.edtDescription);
+        edtPrice = add_menu_layout.findViewById(R.id.edtPrice);
+        edtDiscount = add_menu_layout.findViewById(R.id.edtDiscount);
+
         btnSelect = add_menu_layout.findViewById(R.id.btnSelect);
         btnUpload = add_menu_layout.findViewById(R.id.btnUpload);
 
@@ -186,10 +146,10 @@ public class AdminHome extends AppCompatActivity
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
 
-                if(newCategory != null)
+                if(newFood != null)
                 {
-                    category.push().setValue(newCategory);
-                    Snackbar.make(drawer,"New Category "+newCategory.getName()+" was Added",Snackbar.LENGTH_SHORT).show();
+                    foodList.push().setValue(newFood);
+                    Snackbar.make(rootLayout,"New Food "+newFood.getName()+" was Added",Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -216,12 +176,18 @@ public class AdminHome extends AppCompatActivity
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             mDialog.dismiss();
-                            Toast.makeText(AdminHome.this, "Uploaded !!!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AdminFoodList.this, "Uploaded !!!", Toast.LENGTH_SHORT).show();
                             imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     //set value for new category if image upload and we can get download link
-                                    newCategory = new Category(edtName.getText().toString(),uri.toString());
+                                    newFood = new Food();
+                                    newFood.setName(edtName.getText().toString());
+                                    newFood.setDescription(edtDescription.getText().toString());
+                                    newFood.setPrice(edtPrice.getText().toString());
+                                    newFood.setDiscount(edtDiscount.getText().toString());
+                                    newFood.setMenuId(categoryId);
+                                    newFood.setImage(uri.toString());
                                 }
                             });
                         }
@@ -230,7 +196,7 @@ public class AdminHome extends AppCompatActivity
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             mDialog.dismiss();
-                            Toast.makeText(AdminHome.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AdminFoodList.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -248,7 +214,7 @@ public class AdminHome extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                 && data !=null && data.getData() != null)
+                && data !=null && data.getData() != null)
         {
             savUri = data.getData();
             btnSelect.setText("Image Selected!");
@@ -263,86 +229,77 @@ public class AdminHome extends AppCompatActivity
 
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+    private void loadListFood(String categoryId) {
+        adapter = new FirebaseRecyclerAdapter<Food, FoodViewHolderAdmin>(Food.class,
+                R.layout.add_food_item,
+                FoodViewHolderAdmin.class,
+                foodList.orderByChild("menuId").equalTo(categoryId)//like select * from Food where MenuId=
+        ) {
+
+            @Override
+            protected void populateViewHolder(FoodViewHolderAdmin foodViewHolderAdmin, Food food, int i) {
+                foodViewHolderAdmin.food_name.setText(food.getName());
+
+                Picasso.with(getBaseContext()).load(food.getImage())
+                        .into(foodViewHolderAdmin.food_image);
+
+                foodViewHolderAdmin.setItemClickListener(new ItemClickListener() {
+                    @Override
+                    public void onClick(View view, int position, boolean isLongClick) {
+                        //Start New Activity
+                        //Intent foodDetail = new Intent(AdminFoodList.this, Cart.FoodDetail.class);
+                        //foodDetail.putExtra("FoodId", adapter.getRef(position).getKey());//Send FoodId to new Activity
+                        //startActivity(foodDetail);
+                    }
+                });
+            }
+
+        };
+        adapter.notifyDataSetChanged();;
+        //Set Adapter
+        recyclerView.setAdapter(adapter);
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.admin_home, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_menu) {
-            // Handle the camera action
-        } else if (id == R.id.nav_cart) {
-
-        } else if (id == R.id.nav_orders) {
-
-        } else if (id == R.id.nav_log_out) {
-
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    //Update / Delete
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-
         if(item.getTitle().equals(Common.UPDATE))
         {
-            showUpdateDialog(adapter.getRef(item.getOrder()).getKey(),adapter.getItem(item.getOrder()));
+            showUpdateFoodDialog(adapter.getRef(item.getOrder()).getKey(),adapter.getItem(item.getOrder()));
         }
         else if(item.getTitle().equals(Common.DELETE))
         {
-            deleteCategory(adapter.getRef(item.getOrder()).getKey());
+            deleteFood(adapter.getRef(item.getOrder()).getKey());
         }
 
         return super.onContextItemSelected(item);
-
     }
 
-    private void deleteCategory(String key) {
-        category.child(key).removeValue();
-        Toast.makeText(this, "Category Deleted!!!", Toast.LENGTH_SHORT).show();
+    private void deleteFood(String key) {
+        foodList.child(key).removeValue();
+        Toast.makeText(this, "Food Deleted!!!", Toast.LENGTH_SHORT).show();
     }
 
-    private void showUpdateDialog(final String key, final Category item) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(AdminHome.this);
-        alertDialog.setTitle("Update Category");
+    private void showUpdateFoodDialog(final String key, final Food item) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(AdminFoodList.this);
+        alertDialog.setTitle("Update Food");
         alertDialog.setMessage("Please Fill Full Information");
 
         LayoutInflater inflater = this.getLayoutInflater();
-        View add_menu_layout = inflater.inflate(R.layout.add_new_menu_layout,null);
+        View add_menu_layout = inflater.inflate(R.layout.add_new_food_layout,null);
 
         edtName = add_menu_layout.findViewById(R.id.edtName);
+        edtDescription = add_menu_layout.findViewById(R.id.edtDescription);
+        edtPrice = add_menu_layout.findViewById(R.id.edtPrice);
+        edtDiscount = add_menu_layout.findViewById(R.id.edtDiscount);
+
+        //set default value for view
+        edtName.setText(item.getName());
+        edtDescription.setText(item.getDescription());
+        edtPrice.setText(item.getPrice());
+        edtDiscount.setText(item.getDiscount());
+
         btnSelect = add_menu_layout.findViewById(R.id.btnSelect);
         btnUpload = add_menu_layout.findViewById(R.id.btnUpload);
-
-        //set default name
-        edtName.setText(item.getName());
 
         //Event for button
         btnSelect.setOnClickListener(new View.OnClickListener() {
@@ -367,9 +324,16 @@ public class AdminHome extends AppCompatActivity
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
 
-               //Update information
-                item.setName(edtName.getText().toString());
-                category.child(key).setValue(item);
+                    //Update Information
+                    item.setName(edtName.getText().toString());
+                    item.setDescription(edtDescription.getText().toString());
+                    item.setPrice(edtPrice.getText().toString());
+                    item.setDiscount(edtDiscount.getText().toString());
+
+                    foodList.child(key).setValue(item);
+
+                    Snackbar.make(rootLayout,"Food "+newFood.getName()+" was Updated",Snackbar.LENGTH_SHORT).show();
+
             }
         });
         alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -381,7 +345,7 @@ public class AdminHome extends AppCompatActivity
         alertDialog.show();
     }
 
-    private void changeImage(final Category item) {
+    private void changeImage(final Food item) {
         if(savUri != null)
         {
             final ProgressDialog mDialog = new ProgressDialog(this);
@@ -395,7 +359,7 @@ public class AdminHome extends AppCompatActivity
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             mDialog.dismiss();
-                            Toast.makeText(AdminHome.this, "Uploaded !!!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AdminFoodList.this, "Uploaded !!!", Toast.LENGTH_SHORT).show();
                             imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
@@ -409,7 +373,7 @@ public class AdminHome extends AppCompatActivity
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             mDialog.dismiss();
-                            Toast.makeText(AdminHome.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AdminFoodList.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -421,4 +385,5 @@ public class AdminHome extends AppCompatActivity
                     });
         }
     }
+
 }
