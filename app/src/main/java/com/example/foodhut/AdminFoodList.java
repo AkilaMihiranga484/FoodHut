@@ -332,7 +332,7 @@ public class AdminFoodList extends AppCompatActivity {
 
                     foodList.child(key).setValue(item);
 
-                    Snackbar.make(rootLayout,"Food "+newFood.getName()+" was Updated",Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(rootLayout,"Food "+item.getName()+" was Updated",Snackbar.LENGTH_SHORT).show();
 
             }
         });

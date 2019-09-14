@@ -296,6 +296,8 @@ public class AdminHome extends AppCompatActivity
         } else if (id == R.id.nav_cart) {
 
         } else if (id == R.id.nav_orders) {
+            Intent orderStatus = new Intent(AdminHome.this,HandleOrderStatus.class);
+            startActivity(orderStatus);
 
         } else if (id == R.id.nav_log_out) {
 
