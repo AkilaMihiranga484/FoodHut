@@ -8,9 +8,6 @@ import android.os.Bundle;
 
 import com.example.foodhut.Common.Common;
 import com.example.foodhut.Interface.ItemClickListener;
-import com.example.foodhut.Model.Category;
-import com.example.foodhut.ViewHolder.MenuViewHolder;
-import com.example.foodhut.ViewHolder.MenuViewHolderAdmin;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

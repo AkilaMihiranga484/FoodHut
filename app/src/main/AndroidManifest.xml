@@ -21,10 +21,6 @@
         <activity android:name=".Cart" />
         <activity android:name=".Cart$FoodDetail" />
         <activity android:name=".FoodList" />
-        <activity
-            android:name=".Home"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SignUp" />
         <activity android:name=".SignIn" />
         <activity android:name=".MainActivity">
