@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,7 +12,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,9 +21,7 @@ import android.widget.Toast;
 
 import com.example.foodhut.Common.Common;
 import com.example.foodhut.Interface.ItemClickListener;
-import com.example.foodhut.Model.Category;
 import com.example.foodhut.Model.Food;
-import com.example.foodhut.ViewHolder.FoodViewHolder;
 import com.example.foodhut.ViewHolder.FoodViewHolderAdmin;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnFailureListener;

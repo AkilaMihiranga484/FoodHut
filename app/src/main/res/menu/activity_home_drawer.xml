@@ -17,16 +17,10 @@
             android:title="Cart" />
 
         <item
-        android:id="@+id/nav_orders"
-        android:icon="@drawable/ic_access_time_black_24dp"
-        android:iconTint="@android:color/white"
-        android:title="Order Status" />
-
-        <item
-            android:id="@+id/nav_offers"
-            android:icon="@drawable/ic_stars_black_24dp"
+            android:id="@+id/nav_orders"
+            android:icon="@drawable/ic_access_time_black_24dp"
             android:iconTint="@android:color/white"
-            android:title="Special Offers" />
+            android:title="Order Status" />
 
         <item
             android:id="@+id/nav_log_out"
