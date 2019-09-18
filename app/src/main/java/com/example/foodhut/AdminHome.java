@@ -46,6 +46,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,7 +70,7 @@ public class AdminHome extends AppCompatActivity
     FirebaseRecyclerAdapter<Category, MenuViewHolderAdmin> adapter;
 
     MaterialEditText edtName;
-    FButton btnUpload,btnSelect;
+    Button btnUpload,btnSelect;
 
     Category newCategory;
 
@@ -293,14 +294,23 @@ public class AdminHome extends AppCompatActivity
 
         if (id == R.id.nav_menu) {
             // Handle the camera action
-        } else if (id == R.id.nav_cart) {
+        } else if (id == R.id.nav_custom) {
+            Intent customers = new Intent(AdminHome.this,HandleUsers.class);
+            startActivity(customers);
 
         } else if (id == R.id.nav_orders) {
             Intent orderStatus = new Intent(AdminHome.this,HandleOrderStatus.class);
             startActivity(orderStatus);
 
-        } else if (id == R.id.nav_log_out) {
+        } else if (id == R.id.nav_offers) {
+            Intent offers = new Intent(AdminHome.this,ManageOffers.class);
+            startActivity(offers);
 
+        }else if (id == R.id.nav_log_out) {
+            //Log Out
+            Intent signout = new Intent(AdminHome.this,SignIn.class);
+            signout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(signout);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

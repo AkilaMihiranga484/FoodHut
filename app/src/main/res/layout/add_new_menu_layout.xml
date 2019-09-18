@@ -34,7 +34,7 @@
              android:layout_width="match_parent"
              android:layout_height="wrap_content">
 
-             <info.hoang8f.widget.FButton
+             <Button
                  android:id="@+id/btnSelect"
                  android:layout_width="0dp"
                  android:layout_height="wrap_content"
@@ -46,9 +46,9 @@
                  android:text="SELECT"
                  android:textColor="@android:color/white"
                  android:textSize="14sp"
-                 app:buttonColor="@color/btnSignActive" />
+                 android:background="@color/btnSignActive" />
 
-             <info.hoang8f.widget.FButton
+             <Button
                  android:id="@+id/btnUpload"
                  android:layout_width="0dp"
                  android:layout_weight="1.2"
@@ -60,7 +60,7 @@
                  android:text="UPLOAD"
                  android:textColor="@android:color/white"
                  android:textSize="14sp"
-                 app:buttonColor="@color/btnSignActive" />
+                 android:background="@color/btnSignUp" />
 
          </LinearLayout>
 

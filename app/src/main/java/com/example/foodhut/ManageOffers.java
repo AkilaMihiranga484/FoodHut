@@ -1,10 +1,10 @@
 package com.example.foodhut;
 
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,7 +13,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,12 +20,13 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+
 import com.example.foodhut.Common.Common;
 import com.example.foodhut.Interface.ItemClickListener;
 import com.example.foodhut.Model.Category;
 import com.example.foodhut.Model.Food;
-import com.example.foodhut.ViewHolder.FoodViewHolder;
-import com.example.foodhut.ViewHolder.FoodViewHolderAdmin;
+import com.example.foodhut.Model.Offer;
+import com.example.foodhut.ViewHolder.OfferViewHolderAdmin;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,28 +45,26 @@ import java.util.UUID;
 
 import info.hoang8f.widget.FButton;
 
-public class AdminFoodList extends AppCompatActivity {
+public class ManageOffers extends AppCompatActivity {
+
+    FirebaseDatabase database;
+    DatabaseReference offers;
+    FirebaseStorage storage;
+    StorageReference storageReference;
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
 
     RelativeLayout rootLayout;
 
-    FirebaseDatabase database;
-    DatabaseReference foodList;
-    FirebaseStorage storage;
-    StorageReference storageReference;
-
     FloatingActionButton fab;
 
-    String categoryId="";
+    FirebaseRecyclerAdapter<Offer, OfferViewHolderAdmin> adapter;
 
-    FirebaseRecyclerAdapter<Food, FoodViewHolderAdmin> adapter;
+    MaterialEditText edtName;
+    Button btnUpload,btnSelect;
 
-    MaterialEditText edtName,edtDescription,edtPrice,edtDiscount;
-    Button btnSelect,btnUpload;
-
-    Food newFood;
+    Offer newOffer;
 
     Uri savUri;
     private final int PICK_IMAGE_REQUEST = 71;
@@ -74,55 +72,45 @@ public class AdminFoodList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_food_list);
+        setContentView(R.layout.activity_manage_offers);
 
         database = FirebaseDatabase.getInstance();
-        foodList = database.getReference("Food");
+        offers = database.getReference("Offers");
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
         //Firebase
-        recyclerView = findViewById(R.id.recycler_food);
+        recyclerView = findViewById(R.id.recycler_offer);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        rootLayout = (RelativeLayout)findViewById(R.id.rootLayout);
+        rootLayout = (RelativeLayout)findViewById(R.id.rootOfferLayout);
+
+        loadOffers();
 
         fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAddFoodDialog();
+                showAddOfferDialog();
             }
         });
 
-        //Get Intent Here
-        if(getIntent() != null) {
-            categoryId = getIntent().getStringExtra("CategoryId");
-        }
-        if(!categoryId.isEmpty() && categoryId != null)
-        {
-            loadListFood(categoryId);
-        }
     }
 
-    private void showAddFoodDialog() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(AdminFoodList.this);
-        alertDialog.setTitle("Add New Food");
+    private void showAddOfferDialog() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(ManageOffers.this);
+        alertDialog.setTitle("Add New Offer");
         alertDialog.setMessage("Please Fill Full Information");
 
         LayoutInflater inflater = this.getLayoutInflater();
-        View add_menu_layout = inflater.inflate(R.layout.add_new_food_layout,null);
+        View add_offer_layout = inflater.inflate(R.layout.add_new_offer_layout,null);
 
-        edtName = add_menu_layout.findViewById(R.id.edtName);
-        edtDescription = add_menu_layout.findViewById(R.id.edtDescription);
-        edtPrice = add_menu_layout.findViewById(R.id.edtPrice);
-        edtDiscount = add_menu_layout.findViewById(R.id.edtDiscount);
-
-        btnSelect = add_menu_layout.findViewById(R.id.btnSelect);
-        btnUpload = add_menu_layout.findViewById(R.id.btnUpload);
+        edtName = add_offer_layout.findViewById(R.id.edtName);
+        btnSelect = add_offer_layout.findViewById(R.id.btnOfferSelect);
+        btnUpload = add_offer_layout.findViewById(R.id.btnOfferUpload);
 
         //Event for button
         btnSelect.setOnClickListener(new View.OnClickListener() {
@@ -138,8 +126,8 @@ public class AdminFoodList extends AppCompatActivity {
             }
         });
 
-        alertDialog.setView(add_menu_layout);
-        alertDialog.setIcon(R.drawable.ic_restaurant_black_24dp);
+        alertDialog.setView(add_offer_layout);
+        alertDialog.setIcon(R.drawable.ic_stars_black_24dp);
 
         //Set Button
         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
@@ -147,10 +135,10 @@ public class AdminFoodList extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
 
-                if(newFood != null)
+                if(newOffer != null)
                 {
-                    foodList.push().setValue(newFood);
-                    Snackbar.make(rootLayout,"New Food "+newFood.getName()+" was Added",Snackbar.LENGTH_SHORT).show();
+                    offers.push().setValue(newOffer);
+                    Snackbar.make(rootLayout,"New Offer "+newOffer.getName()+" was Added",Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -177,18 +165,14 @@ public class AdminFoodList extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             mDialog.dismiss();
-                            Toast.makeText(AdminFoodList.this, "Uploaded !!!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ManageOffers.this, "Uploaded !!!", Toast.LENGTH_SHORT).show();
                             imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     //set value for new category if image upload and we can get download link
-                                    newFood = new Food();
-                                    newFood.setName(edtName.getText().toString());
-                                    newFood.setDescription(edtDescription.getText().toString());
-                                    newFood.setPrice(edtPrice.getText().toString());
-                                    newFood.setDiscount(edtDiscount.getText().toString());
-                                    newFood.setMenuId(categoryId);
-                                    newFood.setImage(uri.toString());
+                                    newOffer = new Offer();
+                                    newOffer.setName(edtName.getText().toString());
+                                    newOffer.setImage(uri.toString());
                                 }
                             });
                         }
@@ -197,7 +181,7 @@ public class AdminFoodList extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             mDialog.dismiss();
-                            Toast.makeText(AdminFoodList.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ManageOffers.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -227,80 +211,57 @@ public class AdminFoodList extends AppCompatActivity {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent,"Select Picture"),PICK_IMAGE_REQUEST);
-
     }
 
-    private void loadListFood(String categoryId) {
-        adapter = new FirebaseRecyclerAdapter<Food, FoodViewHolderAdmin>(Food.class,
-                R.layout.add_food_item,
-                FoodViewHolderAdmin.class,
-                foodList.orderByChild("menuId").equalTo(categoryId)//like select * from Food where MenuId=
+    private void loadOffers() {
+        adapter = new FirebaseRecyclerAdapter<Offer, OfferViewHolderAdmin>(Offer.class,
+                R.layout.add_offer_item,
+                OfferViewHolderAdmin.class,
+                offers
         ) {
-
             @Override
-            protected void populateViewHolder(FoodViewHolderAdmin foodViewHolderAdmin, Food food, int i) {
-                foodViewHolderAdmin.food_name.setText(food.getName());
-
-                Picasso.with(getBaseContext()).load(food.getImage())
-                        .into(foodViewHolderAdmin.food_image);
-
-                foodViewHolderAdmin.setItemClickListener(new ItemClickListener() {
-                    @Override
-                    public void onClick(View view, int position, boolean isLongClick) {
-                        //Start New Activity
-                        //Intent foodDetail = new Intent(AdminFoodList.this, Cart.FoodDetail.class);
-                        //foodDetail.putExtra("FoodId", adapter.getRef(position).getKey());//Send FoodId to new Activity
-                        //startActivity(foodDetail);
-                    }
-                });
+            protected void populateViewHolder(OfferViewHolderAdmin offerViewHolderAdmin, Offer model, int position) {
+                offerViewHolderAdmin.offer_name.setText(model.getName());
+                Picasso.with(getBaseContext()).load(model.getImage())
+                        .into(offerViewHolderAdmin.offer_image);
             }
-
         };
-        adapter.notifyDataSetChanged();;
-        //Set Adapter
         recyclerView.setAdapter(adapter);
+
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         if(item.getTitle().equals(Common.UPDATE))
         {
-            showUpdateFoodDialog(adapter.getRef(item.getOrder()).getKey(),adapter.getItem(item.getOrder()));
+            showUpdateOfferDialog(adapter.getRef(item.getOrder()).getKey(),adapter.getItem(item.getOrder()));
         }
         else if(item.getTitle().equals(Common.DELETE))
         {
-            deleteFood(adapter.getRef(item.getOrder()).getKey());
+            deleteOffer(adapter.getRef(item.getOrder()).getKey());
         }
-
         return super.onContextItemSelected(item);
     }
 
-    private void deleteFood(String key) {
-        foodList.child(key).removeValue();
-        Toast.makeText(this, "Food Deleted!!!", Toast.LENGTH_SHORT).show();
+    private void deleteOffer(String key) {
+        offers.child(key).removeValue();
+        Toast.makeText(this, "Offer Deleted!!!", Toast.LENGTH_SHORT).show();
     }
 
-    private void showUpdateFoodDialog(final String key, final Food item) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(AdminFoodList.this);
-        alertDialog.setTitle("Update Food");
+    private void showUpdateOfferDialog(final String key, final Offer item) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(ManageOffers.this);
+        alertDialog.setTitle("Update Offer");
         alertDialog.setMessage("Please Fill Full Information");
 
         LayoutInflater inflater = this.getLayoutInflater();
-        View add_menu_layout = inflater.inflate(R.layout.add_new_food_layout,null);
+        View add_menu_layout = inflater.inflate(R.layout.add_new_offer_layout,null);
 
         edtName = add_menu_layout.findViewById(R.id.edtName);
-        edtDescription = add_menu_layout.findViewById(R.id.edtDescription);
-        edtPrice = add_menu_layout.findViewById(R.id.edtPrice);
-        edtDiscount = add_menu_layout.findViewById(R.id.edtDiscount);
+        btnSelect = add_menu_layout.findViewById(R.id.btnOfferSelect);
+        btnUpload = add_menu_layout.findViewById(R.id.btnOfferUpload);
 
-        //set default value for view
+        //set default name
         edtName.setText(item.getName());
-        edtDescription.setText(item.getDescription());
-        edtPrice.setText(item.getPrice());
-        edtDiscount.setText(item.getDiscount());
-
-        btnSelect = add_menu_layout.findViewById(R.id.btnSelect);
-        btnUpload = add_menu_layout.findViewById(R.id.btnUpload);
 
         //Event for button
         btnSelect.setOnClickListener(new View.OnClickListener() {
@@ -317,7 +278,7 @@ public class AdminFoodList extends AppCompatActivity {
         });
 
         alertDialog.setView(add_menu_layout);
-        alertDialog.setIcon(R.drawable.ic_restaurant_black_24dp);
+        alertDialog.setIcon(R.drawable.ic_stars_black_24dp);
 
         //Set Button
         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
@@ -325,16 +286,9 @@ public class AdminFoodList extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
 
-                    //Update Information
-                    item.setName(edtName.getText().toString());
-                    item.setDescription(edtDescription.getText().toString());
-                    item.setPrice(edtPrice.getText().toString());
-                    item.setDiscount(edtDiscount.getText().toString());
-
-                    foodList.child(key).setValue(item);
-
-                    Snackbar.make(rootLayout,"Food "+item.getName()+" was Updated",Snackbar.LENGTH_SHORT).show();
-
+                //Update information
+                item.setName(edtName.getText().toString());
+                offers.child(key).setValue(item);
             }
         });
         alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -346,7 +300,7 @@ public class AdminFoodList extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void changeImage(final Food item) {
+    private void changeImage(final Offer item) {
         if(savUri != null)
         {
             final ProgressDialog mDialog = new ProgressDialog(this);
@@ -360,7 +314,7 @@ public class AdminFoodList extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             mDialog.dismiss();
-                            Toast.makeText(AdminFoodList.this, "Uploaded !!!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ManageOffers.this, "Uploaded !!!", Toast.LENGTH_SHORT).show();
                             imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
@@ -374,7 +328,7 @@ public class AdminFoodList extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             mDialog.dismiss();
-                            Toast.makeText(AdminFoodList.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ManageOffers.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -386,5 +340,4 @@ public class AdminFoodList extends AppCompatActivity {
                     });
         }
     }
-
 }

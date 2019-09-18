@@ -49,18 +49,21 @@
 
             </LinearLayout>
 
-            <info.hoang8f.widget.FButton
+            <Button
                 android:id="@+id/btnPlaceOrder"
-                android:text="Place Order"
-                android:textColor="@android:color/white"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:textSize="18sp"
-                />
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/btnSignActive"
+                android:text="@string/btnPlaceOrder"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
 
         </RelativeLayout>
 

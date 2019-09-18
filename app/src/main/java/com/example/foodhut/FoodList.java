@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodhut.Common.Common;
 import com.example.foodhut.Interface.ItemClickListener;
 import com.example.foodhut.Model.Food;
 import com.example.foodhut.ViewHolder.FoodViewHolder;
@@ -49,7 +51,7 @@ public class FoodList extends AppCompatActivity {
         }
         if(!categoryId.isEmpty() && categoryId != null)
         {
-            loadListFood(categoryId);
+                loadListFood(categoryId);
         }
     }
 
@@ -71,7 +73,7 @@ public class FoodList extends AppCompatActivity {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
                         //Start New Activity
-                        Intent foodDetail = new Intent(FoodList.this, Cart.FoodDetail.class);
+                        Intent foodDetail = new Intent(FoodList.this, FoodDetail.class);
                         foodDetail.putExtra("FoodId",adapter.getRef(position).getKey());//Send FoodId to new Activity
                         startActivity(foodDetail);
                     }

@@ -14,14 +14,14 @@
         tools:layout_editor_absoluteY="137dp">
 
         <ImageView
-            android:layout_width="323dp"
-            android:layout_height="159dp"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="44dp"
-            android:layout_marginBottom="105dp"
+            android:layout_width="349dp"
+            android:layout_height="142dp"
+            android:layout_marginStart="31dp"
+            android:layout_marginTop="37dp"
+            android:layout_marginEnd="31dp"
+            android:layout_marginBottom="101dp"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/food_hut"
+            android:src="@drawable/logo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,15 +31,15 @@
 
         <TextView
             android:id="@+id/txtSlogan"
-            android:layout_width="236dp"
-            android:layout_height="80dp"
-            android:layout_marginStart="87dp"
-            android:layout_marginTop="148dp"
-            android:layout_marginEnd="88dp"
-            android:layout_marginBottom="52dp"
+            android:layout_width="347dp"
+            android:layout_height="101dp"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="179dp"
+            android:layout_marginEnd="30dp"
             android:gravity="center"
             android:text="@string/slogan"
             android:textColor="@android:color/white"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <info.hoang8f.widget.FButton
+        <Button
             android:id="@+id/btnSignUp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -65,18 +65,19 @@
             android:text="@string/btnSignUp"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            app:buttonColor="@color/btnSignUp" />
+            android:background="@color/btnSignUp"
+            />
 
-        <info.hoang8f.widget.FButton
+        <Button
             android:id="@+id/btnSignIn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:layout_weight="1"
+            android:background="@color/btnSignActive"
             android:text="@string/btnSignIn"
             android:textColor="@android:color/white"
-            android:textSize="18sp"
-            app:buttonColor="@color/btnSignActive" />
+            android:textSize="18sp" />
 
     </LinearLayout>
 

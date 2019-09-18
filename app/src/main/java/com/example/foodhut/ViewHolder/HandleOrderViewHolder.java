@@ -40,12 +40,12 @@ public class HandleOrderViewHolder extends RecyclerView.ViewHolder implements Vi
 
     @Override
     public void onClick(View view) {
-        //itemClickListener.onClick(view,getAdapterPosition(),false);
+        itemClickListener.onClick(view,getAdapterPosition(),false);
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-        contextMenu.setHeaderTitle("Select The Action");
+        contextMenu.setHeaderTitle("Select Action");
 
         contextMenu.add(0,0,getAdapterPosition(),"Update");
         contextMenu.add(0,1,getAdapterPosition(),"Delete");

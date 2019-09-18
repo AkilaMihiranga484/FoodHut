@@ -42,54 +42,61 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                final ProgressDialog mDialog = new ProgressDialog(SignIn.this);
-                mDialog.setMessage("Please wait...");
-                mDialog.show();
+                if (Common.isConnectedToInternet(getBaseContext())) {
 
-                table_user.addValueEventListener(new ValueEventListener() {
+                    final ProgressDialog mDialog = new ProgressDialog(SignIn.this);
+                    mDialog.setMessage("Please wait...");
+                    mDialog.show();
 
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                    table_user.addValueEventListener(new ValueEventListener() {
 
-                        //Check if user not exist in Database
-                        if(dataSnapshot.child(edtPhone.getText().toString()).exists()) {
-                            //Get user information
-                            mDialog.dismiss();
-                            User user = dataSnapshot.child(edtPhone.getText().toString()).getValue(User.class);
-                            user.setPhone(edtPhone.getText().toString());//set phone
-                            if (user.getPhone().equals("0778990419") && user.getName().equals("Admin") && user.getPassword()
-                                    .equals(edtPassword.getText().toString())) {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                Toast.makeText(SignIn.this, "Sign in success!!!", Toast.LENGTH_SHORT).show();
-                                Intent homeIntent = new Intent(SignIn.this, AdminHome.class);
-                                Common.currentUser = user;
-                                startActivity(homeIntent);
-                                finish();
+                            //Check if user not exist in Database
+                            if (dataSnapshot.child(edtPhone.getText().toString()).exists()) {
+                                //Get user information
+                                mDialog.dismiss();
+                                User user = dataSnapshot.child(edtPhone.getText().toString()).getValue(User.class);
+                                user.setPhone(edtPhone.getText().toString());//set phone
+                                if (user.getPhone().equals("0778990410") && user.getName().equals("Admin") && user.getPassword()
+                                        .equals(edtPassword.getText().toString())) {
+
+                                    Toast.makeText(SignIn.this, "Sign in success!!!", Toast.LENGTH_SHORT).show();
+                                    Intent homeIntent = new Intent(SignIn.this, AdminHome.class);
+                                    Common.currentUser = user;
+                                    startActivity(homeIntent);
+                                    finish();
+                                } else if (user.getPassword().equals(edtPassword.getText().toString())) {
+
+                                    Toast.makeText(SignIn.this, "Sign in success!!!", Toast.LENGTH_SHORT).show();
+                                    Intent homeIntent = new Intent(SignIn.this, Home.class);
+                                    Common.currentUser = user;
+                                    startActivity(homeIntent);
+                                    finish();
+                                } else {
+
+                                    Toast.makeText(SignIn.this, "Wrong password!!!", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                mDialog.dismiss();
+                                Toast.makeText(SignIn.this, "User not exist!!!", Toast.LENGTH_SHORT).show();
                             }
-                            else if (user.getPassword().equals(edtPassword.getText().toString())) {
-
-                                Toast.makeText(SignIn.this, "Sign in success!!!", Toast.LENGTH_SHORT).show();
-                                Intent homeIntent = new Intent(SignIn.this, Home.class);
-                                Common.currentUser = user;
-                                startActivity(homeIntent);
-                                finish();
-                            }
-                            else {
-
-                                Toast.makeText(SignIn.this, "Wrong password!!!", Toast.LENGTH_SHORT).show();
-                            }
-                        }else {
-                            mDialog.dismiss();
-                            Toast.makeText(SignIn.this, "User not exist!!!", Toast.LENGTH_SHORT).show();
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+                }
+                else
+                {
+                    Toast.makeText(SignIn.this, "Please Check Your Internet Connection !", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
+
         });
     }
 }

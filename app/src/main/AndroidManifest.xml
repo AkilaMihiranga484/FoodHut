@@ -11,7 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HandleOrderStatus"></activity>
+        <activity android:name=".ManageOffers"></activity>
+        <activity android:name=".SpecialOffers" />
+        <activity android:name=".FoodDetail" />
+        <activity android:name=".HandleUsers" />
+        <activity android:name=".HandleOrderStatus" />
         <activity android:name=".AdminFoodList" />
         <activity
             android:name=".AdminHome"
@@ -19,7 +23,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".OrderStatus" />
         <activity android:name=".Cart" />
-        <activity android:name=".Cart$FoodDetail" />
+        <activity android:name=".FoodDetail$FoodDetail" />
         <activity android:name=".FoodList" />
         <activity
             android:name=".Home"

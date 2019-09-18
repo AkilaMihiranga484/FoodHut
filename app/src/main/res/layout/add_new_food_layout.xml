@@ -82,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <info.hoang8f.widget.FButton
+            <Button
                 android:id="@+id/btnSelect"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -94,21 +94,21 @@
                 android:text="SELECT"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"
-                app:buttonColor="@color/btnSignActive" />
+                android:background="@color/btnSignActive" />
 
-            <info.hoang8f.widget.FButton
+            <Button
                 android:id="@+id/btnUpload"
                 android:layout_width="0dp"
-                android:layout_weight="1.2"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
                 android:layout_alignParentBottom="true"
+                android:layout_margin="20dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1.2"
+                android:background="@color/btnSignUp"
                 android:text="UPLOAD"
                 android:textColor="@android:color/white"
-                android:textSize="14sp"
-                app:buttonColor="@color/btnSignActive" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 

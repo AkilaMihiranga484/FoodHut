@@ -12,25 +12,23 @@ import com.example.foodhut.Common.Common;
 import com.example.foodhut.Interface.ItemClickListener;
 import com.example.foodhut.R;
 
-public class FoodViewHolderAdmin extends RecyclerView.ViewHolder implements
+public class OfferViewHolderAdmin extends RecyclerView.ViewHolder implements
         View.OnClickListener,
-        View.OnCreateContextMenuListener
-{
+        View.OnCreateContextMenuListener {
 
-    public TextView food_name;
-    public ImageView food_image;
+    public TextView offer_name;
+    public ImageView offer_image;
 
     private ItemClickListener itemClickListener;
 
-    public FoodViewHolderAdmin(@NonNull View itemView) {
+    public OfferViewHolderAdmin(@NonNull View itemView) {
         super(itemView);
 
-        food_name = itemView.findViewById(R.id.add_food_name);
-        food_image = itemView.findViewById(R.id.add_food_image);
+        offer_name = itemView.findViewById(R.id.add_offer_name);
+        offer_image = itemView.findViewById(R.id.add_offer_image);
 
         itemView.setOnCreateContextMenuListener(this);
         itemView.setOnClickListener(this);
-
     }
 
     public void setItemClickListener(ItemClickListener itemClickListener) {
@@ -39,7 +37,7 @@ public class FoodViewHolderAdmin extends RecyclerView.ViewHolder implements
 
     @Override
     public void onClick(View view) {
-        itemClickListener.onClick(view,getAdapterPosition(),false);
+        //itemClickListener.onClick(view,getAdapterPosition(),false);
     }
 
     @Override

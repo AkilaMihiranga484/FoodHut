@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.foodhut.Common.Common;
 import com.example.foodhut.Model.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,35 +40,43 @@ public class SignUp extends AppCompatActivity {
         SignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final ProgressDialog mDialog = new ProgressDialog(SignUp.this);
-                mDialog.setMessage("Please wait...");
-                mDialog.show();
 
-                table_user.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+               if(Common.isConnectedToInternet(getBaseContext())) {
 
-                        //Check if user phone number already exist
-                        if(dataSnapshot.child(edtPhone.getText().toString()).exists())
-                        {
-                           mDialog.dismiss();
-                           //Toast.makeText(SignUp.this, "Phone Number Already Registered!!!", Toast.LENGTH_SHORT).show();
+                   final ProgressDialog mDialog = new ProgressDialog(SignUp.this);
+                   mDialog.setMessage("Please wait...");
+                   mDialog.show();
 
-                        }else {
-                            mDialog.dismiss();
-                            User user = new User(edtName.getText().toString(), edtPassword.getText().toString());
-                            table_user.child(edtPhone.getText().toString()).setValue(user);
-                            Toast.makeText(SignUp.this, "Sign Up successfully", Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
+                   table_user.addValueEventListener(new ValueEventListener() {
+                       @Override
+                       public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    }
+                           //Check if user phone number already exist
+                           if (dataSnapshot.child(edtPhone.getText().toString()).exists()) {
+                               mDialog.dismiss();
+                               Toast.makeText(SignUp.this, "Phone Number Already Registered!!!", Toast.LENGTH_SHORT).show();
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                           } else {
+                               mDialog.dismiss();
+                               User user = new User(edtName.getText().toString(), edtPassword.getText().toString());
+                               table_user.child(edtPhone.getText().toString()).setValue(user);
+                               Toast.makeText(SignUp.this, "Sign Up successfully", Toast.LENGTH_SHORT).show();
+                               finish();
+                           }
 
-                    }
-                });
+                       }
+
+                       @Override
+                       public void onCancelled(DatabaseError databaseError) {
+
+                       }
+                   });
+               }
+               else
+               {
+                   Toast.makeText(SignUp.this, "Please Check Your Internet Connection !", Toast.LENGTH_SHORT).show();
+                   return;
+               }
             }
         });
 

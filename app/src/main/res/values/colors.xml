@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#00251a</color>
     <color name="colorAccent">#39796b</color>
 
-    <color name="btnSignUp">#39796B</color>
-    <color name="btnSignActive">#A9D440</color>
+    <color name="btnSignUp">#208B74</color>
+    <color name="btnSignActive">#A4C540</color>
 
     <color name="overlayBackground">#7f333639</color>
     <color name="overlayActionBar">#0e0d0e </color>
