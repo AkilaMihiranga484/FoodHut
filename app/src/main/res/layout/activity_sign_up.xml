@@ -16,12 +16,12 @@
         android:layout_height="wrap_content">
 
         <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/sEdtphone"
+            android:id="@+id/cusPhone"
             android:hint="Phone Number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@android:color/white"
-            android:text="0778990415"
+            android:text=""
             android:textColor="@android:color/white"
             android:textSize="34sp"
             android:inputType="phone"
@@ -33,12 +33,12 @@
             />
 
         <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/sEdtName"
+            android:id="@+id/cusName"
             android:hint="Name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@android:color/white"
-            android:text="Akila"
+            android:text=""
             android:textColor="@android:color/white"
             android:textSize="34sp"
             android:inputType="text"
@@ -50,12 +50,12 @@
             />
 
         <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/sEdtPassword"
+            android:id="@+id/cusPassword"
             android:hint="Password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@android:color/white"
-            android:text="12345"
+            android:text=""
             android:textColor="@android:color/white"
             android:textSize="34sp"
             android:inputType="textPassword"
