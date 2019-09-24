@@ -47,7 +47,7 @@ public class HandleOrderStatus extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        
+
         LoadOrders();
                 
     }
@@ -86,7 +86,7 @@ public class HandleOrderStatus extends AppCompatActivity {
             showUpdateDialog(adapter.getRef(item.getOrder()).getKey(),adapter.getItem(item.getOrder()));
         else if(item.getTitle().equals(Common.DELETE))
             deleteOrder(adapter.getRef(item.getOrder()).getKey());
-        
+
         return super.onContextItemSelected(item);
     }
 
