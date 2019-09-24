@@ -2,6 +2,7 @@ package com.example.foodhut;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -40,8 +41,16 @@ public class SignUp extends AppCompatActivity {
         SignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-               if(Common.isConnectedToInternet(getBaseContext())) {
+                if(TextUtils.isEmpty(Phone.getText().toString())){
+                    Toast.makeText(getApplicationContext(),"Please Enter Phone Number",Toast.LENGTH_SHORT).show();
+                }
+                else if(TextUtils.isEmpty(Name.getText().toString())){
+                    Toast.makeText(getApplicationContext(),"Please Enter Name",Toast.LENGTH_SHORT).show();
+                }
+                else if(TextUtils.isEmpty(Password.getText().toString())){
+                    Toast.makeText(getApplicationContext(),"Please Enter Password",Toast.LENGTH_SHORT).show();
+                }
+                else if(Common.isConnectedToInternet(getBaseContext())) {
 
                    final ProgressDialog mDialog = new ProgressDialog(SignUp.this);
                    mDialog.setMessage("Please wait...");
@@ -50,7 +59,6 @@ public class SignUp extends AppCompatActivity {
                    table_user.addValueEventListener(new ValueEventListener() {
                        @Override
                        public void onDataChange(DataSnapshot dataSnapshot) {
-
                            //Check if user phone number already exist
                            if (dataSnapshot.child(Phone.getText().toString()).exists()) {
                                mDialog.dismiss();
