@@ -3,6 +3,7 @@ package com.example.foodhut;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,17 +45,21 @@ public class SignIn extends AppCompatActivity {
 
                 if (Common.isConnectedToInternet(getBaseContext())) {
 
-                    final ProgressDialog mDialog = new ProgressDialog(SignIn.this);
-                    mDialog.setMessage("Please wait...");
-                    mDialog.show();
-
                     table_user.addValueEventListener(new ValueEventListener() {
 
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-
+                            if(TextUtils.isEmpty(edtPhone.getText().toString())){
+                                Toast.makeText(getApplicationContext(),"Please Enter Phone Number",Toast.LENGTH_SHORT).show();
+                            }
+                            else if(TextUtils.isEmpty(edtPassword.getText().toString())){
+                                Toast.makeText(getApplicationContext(),"Please Enter Password",Toast.LENGTH_SHORT).show();
+                            }
                             //Check if user not exist in Database
-                            if (dataSnapshot.child(edtPhone.getText().toString()).exists()) {
+                            else if (dataSnapshot.child(edtPhone.getText().toString()).exists()) {
+                                final ProgressDialog mDialog = new ProgressDialog(SignIn.this);
+                                mDialog.setMessage("Please wait...");
+                                mDialog.show();
                                 //Get user information
                                 mDialog.dismiss();
                                 User user = dataSnapshot.child(edtPhone.getText().toString()).getValue(User.class);
@@ -79,7 +84,6 @@ public class SignIn extends AppCompatActivity {
                                     Toast.makeText(SignIn.this, "Wrong password!!!", Toast.LENGTH_SHORT).show();
                                 }
                             } else {
-                                mDialog.dismiss();
                                 Toast.makeText(SignIn.this, "User not exist!!!", Toast.LENGTH_SHORT).show();
                             }
                         }

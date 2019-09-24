@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.foodhut.Common.Common;
 import com.example.foodhut.Interface.ItemClickListener;
@@ -121,6 +122,7 @@ public class HandleOrderStatus extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
+                Toast.makeText(HandleOrderStatus.this, "No Order has been Updated", Toast.LENGTH_SHORT).show();
             }
         });
         alertDialog.show();

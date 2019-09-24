@@ -144,14 +144,17 @@ public class AdminFoodList extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
-
-                if(newFood != null)
+                if(TextUtils.isEmpty(edtName.getText().toString()) || TextUtils.isEmpty(edtDescription.getText().toString()) || TextUtils.isEmpty(edtPrice.getText().toString())
+                || TextUtils.isEmpty(edtDiscount.getText().toString())){
+                    Toast.makeText(AdminFoodList.this, "One Or More Fields are Empty,Adding Failed", Toast.LENGTH_SHORT).show();
+                }
+                else if(newFood == null){
+                    Toast.makeText(AdminFoodList.this, "No Food has been Added", Toast.LENGTH_SHORT).show();
+                }
+                else if(newFood != null)
                 {
                     foodList.push().setValue(newFood);
                     Snackbar.make(rootLayout,"New Food "+newFood.getName()+" was Added",Snackbar.LENGTH_SHORT).show();
-                }
-                else if(TextUtils.isEmpty(edtName.getText().toString())){
-                    Toast.makeText(getApplicationContext(),"Please Eneter Food Name",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -159,6 +162,7 @@ public class AdminFoodList extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
+                Toast.makeText(AdminFoodList.this, "No Food has been Added", Toast.LENGTH_SHORT).show();
             }
         });
         alertDialog.show();
@@ -325,7 +329,11 @@ public class AdminFoodList extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
-
+                if(TextUtils.isEmpty(edtName.getText().toString()) || TextUtils.isEmpty(edtDescription.getText().toString()) || TextUtils.isEmpty(edtPrice.getText().toString())
+                        || TextUtils.isEmpty(edtDiscount.getText().toString())){
+                    Toast.makeText(AdminFoodList.this, "One Or More Fields are Empty,Adding Failed", Toast.LENGTH_SHORT).show();
+                }
+                else {
                     //Update Information
                     item.setName(edtName.getText().toString());
                     item.setDescription(edtDescription.getText().toString());
@@ -334,14 +342,15 @@ public class AdminFoodList extends AppCompatActivity {
 
                     foodList.child(key).setValue(item);
 
-                    Snackbar.make(rootLayout,"Food "+item.getName()+" was Updated",Snackbar.LENGTH_SHORT).show();
-
+                    Snackbar.make(rootLayout, "Food " + item.getName() + " was Updated", Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
         alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
+                Toast.makeText(AdminFoodList.this, "No Food has been Updated", Toast.LENGTH_SHORT).show();
             }
         });
         alertDialog.show();
