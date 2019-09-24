@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -185,8 +186,13 @@ public class AdminHome extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
-
-                if(newCategory != null)
+                if(TextUtils.isEmpty(edtName.getText().toString())){
+                    Toast.makeText(AdminHome.this, "Name Cannot be Empty,Adding Failed", Toast.LENGTH_SHORT).show();
+                }
+                else if(newCategory == null){
+                    Toast.makeText(AdminHome.this, "Please Select Image and Upload !", Toast.LENGTH_SHORT).show();
+                }
+                else if(newCategory != null)
                 {
                     category.push().setValue(newCategory);
                     Snackbar.make(drawer,"New Category "+newCategory.getName()+" was Added",Snackbar.LENGTH_SHORT).show();
@@ -197,6 +203,7 @@ public class AdminHome extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
+                Toast.makeText(AdminHome.this, "No Category has been Added", Toast.LENGTH_SHORT).show();
             }
         });
         alertDialog.show();
@@ -377,16 +384,21 @@ public class AdminHome extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
-
-               //Update information
-                item.setName(edtName.getText().toString());
-                category.child(key).setValue(item);
+                if(TextUtils.isEmpty(edtName.getText().toString())){
+                    Toast.makeText(AdminHome.this, "Name Cannot be Empty,Update Failed", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    //Update information
+                    item.setName(edtName.getText().toString());
+                    category.child(key).setValue(item);
+                }
             }
         });
         alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
+                Toast.makeText(AdminHome.this, "No Category has been Updated", Toast.LENGTH_SHORT).show();
             }
         });
         alertDialog.show();

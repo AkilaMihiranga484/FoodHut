@@ -2,6 +2,7 @@ package com.example.foodhut;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -102,21 +103,26 @@ public class Cart extends AppCompatActivity {
         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //Create new request
-                Request request = new Request(
-                        Common.currentUser.getPhone(),
-                        Common.currentUser.getName(),
-                        edtAddress.getText().toString(),
-                        txtTotalPrice.getText().toString(),
-                        cart
-                );
-                //Submit to database
-                requests.child(String.valueOf(System.currentTimeMillis()))
-                        .setValue(request);
-                //Delete Cart
-                new Database(getBaseContext()).cleanCart();
-                Toast.makeText(Cart.this, "Thank You , Order Place", Toast.LENGTH_SHORT).show();
-                finish();
+                if(TextUtils.isEmpty(edtAddress.getText().toString())){
+                    Toast.makeText(Cart.this, "Address Cannot be Empty,Order Not Placed", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    //Create new request
+                    Request request = new Request(
+                            Common.currentUser.getPhone(),
+                            Common.currentUser.getName(),
+                            edtAddress.getText().toString(),
+                            txtTotalPrice.getText().toString(),
+                            cart
+                    );
+                    //Submit to database
+                    requests.child(String.valueOf(System.currentTimeMillis()))
+                            .setValue(request);
+                    //Delete Cart
+                    new Database(getBaseContext()).cleanCart();
+                    Toast.makeText(Cart.this, "Thank You , Order Place", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
             }
         });
 
@@ -124,6 +130,7 @@ public class Cart extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
+                Toast.makeText(Cart.this, "No Order has been Added", Toast.LENGTH_SHORT).show();
             }
         });
         alertDialog.show();
