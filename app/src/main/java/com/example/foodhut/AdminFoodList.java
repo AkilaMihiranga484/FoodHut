@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.firebase.storage.internal.Util;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
 
@@ -147,6 +149,9 @@ public class AdminFoodList extends AppCompatActivity {
                 {
                     foodList.push().setValue(newFood);
                     Snackbar.make(rootLayout,"New Food "+newFood.getName()+" was Added",Snackbar.LENGTH_SHORT).show();
+                }
+                else if(TextUtils.isEmpty(edtName.getText().toString())){
+                    Toast.makeText(getApplicationContext(),"Please Eneter Food Name",Toast.LENGTH_SHORT).show();
                 }
             }
         });

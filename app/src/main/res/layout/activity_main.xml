@@ -14,14 +14,13 @@
         tools:layout_editor_absoluteY="137dp">
 
         <ImageView
-            android:layout_width="349dp"
-            android:layout_height="142dp"
-            android:layout_marginStart="31dp"
-            android:layout_marginTop="37dp"
-            android:layout_marginEnd="31dp"
-            android:layout_marginBottom="101dp"
+            android:layout_width="357dp"
+            android:layout_height="233dp"
+            android:layout_marginStart="29dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="47dp"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/logo"
+            android:src="@drawable/logo1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,11 +30,12 @@
 
         <TextView
             android:id="@+id/txtSlogan"
-            android:layout_width="347dp"
-            android:layout_height="101dp"
-            android:layout_marginStart="34dp"
-            android:layout_marginTop="179dp"
-            android:layout_marginEnd="30dp"
+            android:layout_width="351dp"
+            android:layout_height="90dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="185dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="5dp"
             android:gravity="center"
             android:text="@string/slogan"
             android:textColor="@android:color/white"
